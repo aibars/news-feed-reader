@@ -14,5 +14,7 @@ namespace NewsFeedReader.Domain.Data
         {
 
         }
+
+        public DbSet<UserFeed> UserFeeds { get; set; }
     }
 }
