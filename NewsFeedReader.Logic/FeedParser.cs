@@ -9,72 +9,9 @@ namespace NewsFeedReader.Logic
 {
     public static class FeedParser
     {
-        public static List<Feed> Parse(string url, FeedType feedType)
+        public static List<Feed> Parse(string url)
         {
-            switch (feedType)
-            {
-                case FeedType.RSS:
-                    return ParseRss(url);
-                case FeedType.Atom:
-                    return ParseAtom(url);
-                default:
-                    throw new NotSupportedException(string.Format("{0} is not supported", feedType.ToString()));
-            }
-        }
-
-        public static List<Feed> ParseAtom(string url)
-        {
-            var entries = new List<Feed>();
-            try
-            {
-                XDocument doc = XDocument.Load(url);
-
-                if (doc.Root != null)
-                {
-                    var channels = doc.Root.Descendants().FirstOrDefault(i => i.Name.LocalName.Equals("channel"));
-                    if (channels != null)
-                    {
-                        var items = channels.Elements().Where(x => x.Name.LocalName.Equals("item")).Select(y =>
-                        {
-                            var feed = new Feed();
-
-                            var descriptionNode = y.Elements().FirstOrDefault(i => i.Name.LocalName == "summary");
-                            if (descriptionNode != null)
-                            {
-                                feed.Content = descriptionNode.Value;
-                            }
-
-                            var linkNode = y.Elements().FirstOrDefault(i => i.Name.LocalName == "link");
-                            if (linkNode != null)
-                            {
-                                feed.Link = linkNode.Value;
-                            }
-
-                            var pubDateNode = y.Elements().FirstOrDefault(i => i.Name.LocalName == "published");
-                            if (pubDateNode != null)
-                            {
-                                feed.PublishDate = ParseDate(pubDateNode.Value);
-                            }
-
-                            var titleNode = y.Elements().FirstOrDefault(i => i.Name.LocalName == "title");
-                            if (titleNode != null)
-                            {
-                                feed.Title = titleNode.Value;
-                            }
-
-                            return feed;
-                        });
-
-                        entries = items.ToList();
-                    }
-                }
-            }
-            catch
-            {
-                Trace.TraceError("Error parsin the Atom Feed in the URL: " + url + ". Returning empty list.");
-            }
-
-            return entries;
+            return ParseRss(url);
         }
 
         public static List<Feed> ParseRss(string url)
@@ -124,7 +61,7 @@ namespace NewsFeedReader.Logic
                     }
                 }
             }
-            catch 
+            catch
             {
                 Trace.TraceError("Error parsing the RSS Feed in the URL: " + url + ". Returning empty list.");
             }

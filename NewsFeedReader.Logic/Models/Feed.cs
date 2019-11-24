@@ -10,6 +10,6 @@ namespace NewsFeedReader.Logic.Models
 
         public string Content { get; set; }
 
-        public DateTime PublishDate { get; internal set; }
+        public DateTime? PublishDate { get; internal set; }
     }
 }

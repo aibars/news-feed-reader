@@ -68,10 +68,9 @@ class Login extends React.Component {
             </div>
         );
     }
-
 }
 
-const mapState = (state) => {
+const mapState = () => {
     return {}
 };
 

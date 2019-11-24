@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Router, Route, Redirect, Switch } from 'react-router';
-import { ChatRoom } from './ChatRoom';
+import { Feeds } from './Feeds';
 import PrivateRoute from 'react-private-route';
 import { Login } from './Login';
 import { history } from '../history';
@@ -17,8 +17,8 @@ class App extends React.Component {
         return (
             <Router history={history}>
                 <Switch>
-                    <PrivateRoute exact path="/" component={ChatRoom}
-                        isAuthenticated={!!this.isLoggedIn()} />
+                    <PrivateRoute exact path="/" component={Feeds}
+                        isAuthenticated={this.isLoggedIn()} />
                     <Route path="/login" component={Login} />
                     <Redirect from="*" to="/" />
                 </Switch>

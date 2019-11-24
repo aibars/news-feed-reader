@@ -8,19 +8,16 @@ namespace NewsFeedReader.Logic
 {
     public class FeedData : IFeedData
     {
-        public IEnumerable<Feed> GetFeeds(string url, FeedType format)
+        private string url;
+
+        public FeedData(string url)
         {
-            List<Feed> parsedValues = new List<Feed>();
+            this.url = url;
+        }
 
-            if (format.Equals("RSS"))
-            {
-                parsedValues = FeedParser.Parse(url, FeedType.RSS);
-            }
-            else if (format.Equals("ATOM"))
-            {
-                parsedValues = FeedParser.Parse(url, FeedType.Atom);
-            }
-
+        public IEnumerable<Feed> GetFeeds()
+        {
+            var parsedValues = FeedParser.Parse(url);
 
             CacheItemPolicy policy = new CacheItemPolicy
             {
