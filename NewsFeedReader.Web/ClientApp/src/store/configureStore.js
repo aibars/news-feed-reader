@@ -1,7 +1,7 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
-import { authentication, messages } from '.';
+import { authentication, feeds } from '.';
 
 export default function configureStore(history, initialState) {
     const middleware = [
@@ -11,7 +11,7 @@ export default function configureStore(history, initialState) {
 
     const rootReducer = combineReducers({
         authentication, 
-        messages,
+        feeds,
         router: connectRouter(history)
     });
 

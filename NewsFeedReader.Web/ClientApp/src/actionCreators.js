@@ -5,9 +5,9 @@ const constants = {
     LOGIN_REQUEST: 'LOGIN_REQUEST',
     LOGIN_SUCCESS: 'LOGIN_SUCCESS',
     LOGIN_FAILURE: 'LOGIN_FAILURE',
-    GET_MESSAGES_REQUEST: 'GET_MESSAGES_REQUEST',
-    GET_MESSAGES_SUCCESS: 'GET_MESSAGES_SUCCESS',
-    GET_MESSAGES_FAILURE: 'GET_MESSAGES_FAILURE',
+    GET_FEEDS_REQUEST: 'GET_FEEDS_REQUEST',
+    GET_FEEDS_SUCCESS: 'GET_FEEDS_SUCCESS',
+    GET_FEEDS_FAILURE: 'GET_FEEDS_FAILURE',
 };
 
 export function login(username, password) {
@@ -39,27 +39,50 @@ export function login(username, password) {
     };
 }
 
-export function getMessages() {
+export function getFeeds() {
     return dispatch => {
         dispatch(request());
 
-        service.getMessages()
+        service.getFeeds()
             .then(
-                messages => dispatch(success(messages)),
+                data => dispatch(success(data)),
                 error => dispatch(failure(error.toString()))
             );
     };
 
     function request() {
-        return { type: constants.GET_MESSAGES_REQUEST }
+        return { type: constants.GET_FEEDS_REQUEST }
     }
 
-    function success(messages) {
-        return { type: constants.GET_MESSAGES_SUCCESS, messages }
+    function success(feeds) {
+        return { type: constants.GET_FEEDS_SUCCESS, feeds }
     }
 
     function failure(error) {
-        return { type: constants.GET_MESSAGES_FAILURE, error }
+        return { type: constants.GET_FEEDS_FAILURE, error }
+    }
+}
+
+export function subscribeToFeed() {
+    return dispatch => {
+        dispatch(request());
+
+        service.subscribeToFeed()
+            .then(
+                () => dispatch(success()),
+                error => dispatch(failure(error.toString()))
+            );
+    };
+
+    function request() {
+        return { type: 'SUBSCRIBE_REQUEST' }
     }
 
+    function success(feeds) {
+        return { type: 'SUBSCRIBE_SUCCESS' }
+    }
+
+    function failure(error) {
+        return { type: 'SUBSCRIBE_FAILURE', error }
+    }
 }

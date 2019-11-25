@@ -8,20 +8,22 @@ const constants = {
   LOGIN_REQUEST: 'LOGIN_REQUEST',
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
   LOGIN_FAILURE: 'LOGIN_FAILURE',
-  GET_MESSAGES_SUCCESS: 'GET_MESSAGES_SUCCESS',
-  GET_MESSAGES_FAILURE: 'GET_MESSAGES_FAILURE',
-  GET_MESSAGES_REQUEST: 'GET_MESSAGES_REQUEST'
+  GET_FEEDS_SUCCESS: 'GET_FEEDS_SUCCESS',
+  GET_FEEDS_FAILURE: 'GET_FEEDS_FAILURE',
+  GET_FEEDS_REQUEST: 'GET_FEEDS_REQUEST'
 };
 
 export function authentication(state = initialState, action) {
   switch (action.type) {
     case constants.LOGIN_REQUEST:
       return {
+        ...initialState,
         loggingIn: true,
         user: action.user
       };
     case constants.LOGIN_SUCCESS:
       return {
+        ...initialState,
         loggedIn: true,
         user: action.user
       };
@@ -32,16 +34,14 @@ export function authentication(state = initialState, action) {
   }
 }
 
-export function messages(state = { items: [] }, action) {
+export function feeds(state = [], action) {
   switch (action.type) {
-    case constants.GET_MESSAGES_REQUEST:
-      return { items: [] };
-    case constants.GET_MESSAGES_SUCCESS:
-      return {
-        items: action.messages,
-      };
-    case constants.GET_MESSAGES_FAILURE:
-      return { items: [] };
+    case constants.GET_FEEDS_REQUEST:
+      return state;
+    case constants.GET_FEEDS_SUCCESS:
+      return action.feeds;
+    case constants.GET_FEEDS_FAILURE:
+      return state;
     default:
       return state;
   }

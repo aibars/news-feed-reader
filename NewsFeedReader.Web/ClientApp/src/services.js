@@ -2,7 +2,7 @@ import { authHeader } from './auth-header';
 
 export const service = {
     login,
-    getMessages
+    getFeeds: getFeeds
 };
 
 function login(username, password) {
@@ -37,12 +37,12 @@ function handleResponse(response) {
     });
 }
 
-function getMessages() {
+function getFeeds() {
     const requestOptions = {
         method: 'GET',
         headers: authHeader(),
     };
 
-    return fetch('/api/messages', requestOptions)
+    return fetch('/api/feeds/user', requestOptions)
         .then(handleResponse);
 }

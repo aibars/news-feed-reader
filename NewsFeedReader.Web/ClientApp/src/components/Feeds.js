@@ -2,23 +2,26 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import '../styles/Feeds.css';
-import { service } from '../services';
-import moment from 'moment';
+import { getFeeds, subscribeToFeed } from '../actionCreators';
+import FeedItem from './FeedItem';
 
 class Feeds extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      username: '',
-      feeds: [],
-      feedUrl: ''
+      feedUrl: '',
+      searchText: '',
     };
 
     this.registerFeed = this.registerFeed.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
- 
+
+  componentDidMount() {
+    this.props.getFeeds();
+  }
+
   handleKeyPress = (e) => {
     if (e.charCode === 13) {
       this.registerFeed();
@@ -26,11 +29,12 @@ class Feeds extends React.Component {
   }
 
   registerFeed = () => {
-    if (this.state.message === '') return;
-    alert('registered url:', this.state.feedUrl)
+    if (this.state.feedUrl === '') return;
+    this.subscribeToFeed(this.state.feedUrl);
   };
 
   render() {
+    let feeds = this.props.feeds;
     return (
       <div className="feeds-box">
         <div id="status-line">
@@ -45,33 +49,36 @@ class Feeds extends React.Component {
           <span className="login-label">Logged in as: <label>{this.props.user.userName}</label>
             <Link onClick={() => localStorage.removeItem('user')} className="logout-label" to="/login">Logout</Link>
           </span>
+
+          <br></br>
+          <input className="login-input"
+            type="text"
+            value={this.state.searchText}
+            placeholder="Search..."
+            onChange={e => this.setState({ searchText: e.target.value })}
+          />
+
         </div>
-        {/* create new component */}
-        <div> 
-          {this.state.feeds.map((item, index) => (
-            <span className={"feed-line-" + (index % 2 === 0 ? "even" : "odd")}
-              key={index}>{item.userName}: {item.text}  <label className="send-date">{isToday(item.sendDate) ? moment(item.sendDate).format('hh:mm') : moment(item.sendDate).format('YYYY/DD/MM hh:mm')}</label>
-            </span>
-          ))}
-        </div>
-        {/* ------- */}
+        {feeds.map((item, index) => <FeedItem
+          key={index}
+          id={index}
+          item={item}>
+        </FeedItem>)}
       </div>
     );
   }
 }
 
+const mapDispatchToProps = {
+  getFeeds,
+  subscribeToFeed
+};
+
 const connectedFeeds = connect((state) => {
-  const { authentication, messages } = state;
+  const { authentication, feeds } = state;
   const { user } = authentication;
-  return { user, messages };
-})(Feeds);
+  return { user, feeds };
+}, mapDispatchToProps)(Feeds);
 
 export { connectedFeeds as Feeds };
 
-const isToday = (input) => {
-  const today = new Date();
-  const dateInput = new Date(input);
-  return dateInput.getDate() === today.getDate() &&
-    dateInput.getMonth() === today.getMonth() &&
-    dateInput.getFullYear() === today.getFullYear();
-}

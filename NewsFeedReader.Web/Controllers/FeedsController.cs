@@ -38,7 +38,7 @@ namespace NewsFeedReader.Web
         /// Obtains all feeds a particular user
         /// </summary>
         [Route("user")]
-        public async Task<FeedModel> GetFeedItems()
+        public async Task<List<FeedModel>> GetFeedItems()
         {
             var model = new FeedModel();
 
@@ -60,11 +60,7 @@ namespace NewsFeedReader.Web
             }
 
             feeds.OrderByDescending(x => x.PublishDate);
-            model = _mapper.Map<FeedModel>(feeds);
-
-            model.TotalCount = feeds.Count();
-
-            return model;
+            return _mapper.Map<List<FeedModel>>(feeds);
         }
     }
 }

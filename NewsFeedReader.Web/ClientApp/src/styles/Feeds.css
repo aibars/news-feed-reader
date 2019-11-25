@@ -1,10 +1,3 @@
-.new-chat { 
-    padding: 16px 16px 16px 60px;
-    border: none;
-    background: rgba(0, 0, 0, 0.003);
-    box-shadow: inset 0 -2px 1px rgba(0,0,0,0.03);
-}
-
 .button {
     background-color: #4CAF50;
     border: none;
@@ -40,15 +33,25 @@
 }
 
 .feed-line-even {
+  
   display: block;
   background-color: #70a1ff;
 }
 
 .feed-line-odd {
   display: block;
+  
   background-color: #ccdeff;
 }
 
 #status-line {
   margin-bottom: 20px;
+}
+
+.item-link {
+  text-decoration: none;
+}
+
+a:link{
+  text-decoration: none!important;
 }

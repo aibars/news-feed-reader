@@ -3,9 +3,12 @@ using Microsoft.Extensions.Configuration;
 using NewsFeedReader.Domain.Data;
 using NewsFeedReader.Domain.Models;
 using NewsFeedReader.Providers.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace NewsFeedReader.Providers
 {
@@ -42,16 +45,26 @@ namespace NewsFeedReader.Providers
         /// </summary>
         public async Task SubscribeToFeed(string username, string url)
         {
-            var user = await _context.Users
-                .FirstOrDefaultAsync(x => x.UserName == username);
-
-            _context.UserFeeds.Add(new UserFeed
+            try
             {
-                Url = url,
-                UserId = user.Id
-            });
+                SyndicationFeed.Load(XmlReader.Create(url));
 
-            await _context.SaveChangesAsync();
+                var user = await _context.Users
+                    .FirstOrDefaultAsync(x => x.UserName == username);
+
+                _context.UserFeeds.Add(new UserFeed
+                {
+                    Url = url,
+                    UserId = user.Id
+                });
+
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Error parsing RSS Feed", ex);
+            }
         }
     }
 }

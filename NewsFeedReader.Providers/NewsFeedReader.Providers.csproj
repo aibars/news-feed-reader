@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.ServiceModel.Syndication" Version="4.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\NewsFeedReader.Domain\NewsFeedReader.Domain.csproj" />
   </ItemGroup>
 
