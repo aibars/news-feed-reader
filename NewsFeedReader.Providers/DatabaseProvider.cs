@@ -18,12 +18,10 @@ namespace NewsFeedReader.Providers
     public class DatabaseProvider : IDatabaseProvider
     {
         protected readonly ApplicationDbContext _context;
-        protected readonly IConfiguration _configuration;
 
-        public DatabaseProvider(ApplicationDbContext context, IConfiguration configuration)
+        public DatabaseProvider(ApplicationDbContext context)
         {
             _context = context;
-            _configuration = configuration;
         }
 
         /// <summary>

@@ -63,11 +63,11 @@ export function getFeeds() {
     }
 }
 
-export function subscribeToFeed() {
+export function subscribeToFeed(url) {
     return dispatch => {
         dispatch(request());
 
-        service.subscribeToFeed()
+        service.subscribeToFeed(url)
             .then(
                 () => dispatch(success()),
                 error => dispatch(failure(error.toString()))

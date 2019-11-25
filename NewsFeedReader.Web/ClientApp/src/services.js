@@ -2,7 +2,8 @@ import { authHeader } from './auth-header';
 
 export const service = {
     login,
-    getFeeds: getFeeds
+    getFeeds: getFeeds,
+    subscribeToFeed: subscribeToFeed,
 };
 
 function login(username, password) {
@@ -44,5 +45,16 @@ function getFeeds() {
     };
 
     return fetch('/api/feeds/user', requestOptions)
+        .then(handleResponse);
+}
+
+function subscribeToFeed(url) {
+    const requestOptions = {
+        method: 'POST',
+        headers: authHeader(),
+        body: { url: url }
+    };
+
+    return fetch('/api/feeds/subscribe', requestOptions)
         .then(handleResponse);
 }

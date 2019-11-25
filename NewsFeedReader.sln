@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsFeedReader.Providers", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsFeedReader.Logic", "NewsFeedReader.Logic\NewsFeedReader.Logic.csproj", "{F2E97D70-017A-438E-A3D3-670A1D10ADC5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsFeedReader.Web.Tests", "NewsFeedReader.Web.Tests\NewsFeedReader.Web.Tests.csproj", "{781D07A6-4500-4330-BD09-860F57C5DD9A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsFeedReader.Providers.Tests", "NewsFeedReader.Providers.Tests\NewsFeedReader.Providers.Tests.csproj", "{B710DFA8-A618-464D-9076-CC846D37ABE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{F2E97D70-017A-438E-A3D3-670A1D10ADC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2E97D70-017A-438E-A3D3-670A1D10ADC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2E97D70-017A-438E-A3D3-670A1D10ADC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{781D07A6-4500-4330-BD09-860F57C5DD9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{781D07A6-4500-4330-BD09-860F57C5DD9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{781D07A6-4500-4330-BD09-860F57C5DD9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{781D07A6-4500-4330-BD09-860F57C5DD9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B710DFA8-A618-464D-9076-CC846D37ABE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B710DFA8-A618-464D-9076-CC846D37ABE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B710DFA8-A618-464D-9076-CC846D37ABE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B710DFA8-A618-464D-9076-CC846D37ABE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

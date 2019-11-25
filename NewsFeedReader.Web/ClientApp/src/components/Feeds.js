@@ -16,6 +16,7 @@ class Feeds extends React.Component {
 
     this.registerFeed = this.registerFeed.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.searchFeeds = this.searchFeeds.bind(this);
   }
 
   componentDidMount() {
@@ -27,6 +28,15 @@ class Feeds extends React.Component {
       this.registerFeed();
     }
   }
+
+  searchFeeds = (e) => {
+    var filtered = this.props.feeds.filter((item, index) => {
+        if(item.Content.includes(e.target.value)) return item;
+        return null;
+    });
+
+    this.setState({ searchText: e.target.value })
+  };
 
   registerFeed = () => {
     if (this.state.feedUrl === '') return;
@@ -45,7 +55,7 @@ class Feeds extends React.Component {
             onChange={e => this.setState({ feedUrl: e.target.value })}
           />
 
-          <button className="login-btn subscribe-btn" onClick={this.registerFeed}>Subscribe</button>
+          <button className="login-btn subscribe-btn" onClick={this.registerFeed}>Subscribe to RSS</button>
           <span className="login-label">Logged in as: <label>{this.props.user.userName}</label>
             <Link onClick={() => localStorage.removeItem('user')} className="logout-label" to="/login">Logout</Link>
           </span>
@@ -55,7 +65,7 @@ class Feeds extends React.Component {
             type="text"
             value={this.state.searchText}
             placeholder="Search..."
-            onChange={e => this.setState({ searchText: e.target.value })}
+            onChange={(e) => this.searchFeeds(e)}
           />
 
         </div>
