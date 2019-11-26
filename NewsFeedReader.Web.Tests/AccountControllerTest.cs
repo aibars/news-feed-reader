@@ -6,6 +6,7 @@ using NewsFeedReader.Domain.ApiModels.Request;
 using NewsFeedReader.Domain.ApiModels.Response;
 using NewsFeedReader.Domain.Models;
 using NewsFeedReader.Logic.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -162,17 +163,14 @@ namespace NewsFeedReader.Web.Tests
 
             _signInManager = new FakeSignInManager(_userStore, users, Microsoft.AspNetCore.Identity.SignInResult.Failed);
 
-            _tokenService.Setup(x => x.GenerateJwtToken(It.IsAny<ApplicationUser>())).Returns(new Logic.Models.JsonWebToken("a", "123", 1));
+            _tokenService.Setup(x => x.GenerateJwtToken(It.IsAny<ApplicationUser>())).Returns(new Logic.Models.JsonWebToken("user", "123", 1));
             _mapper.Setup(x => x.Map<ApplicationUser>(It.IsAny<RegisterRequestDto>())).Returns(appUser);
             _mapper.Setup(x => x.Map<LoggedInUserDto>(It.IsAny<ApplicationUser>())).Returns(loggedInUser);
 
             var controller = new AccountController(_userManager, _signInManager, _mapper.Object, _tokenService.Object);
 
-            // Act
-            var result = controller.Register(model).Result as BadRequestObjectResult;
-
             // Assert
-            Assert.Equal(typeof(BadRequestObjectResult), result.GetType());
+            Assert.Throws<AggregateException>(() => controller.Register(model).Result);
         }
     }
 }
