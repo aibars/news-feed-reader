@@ -69,20 +69,25 @@ export function subscribeToFeed(url) {
 
         service.subscribeToFeed(url)
             .then(
-                () => dispatch(success()),
+                () => this.getFeeds(),
                 error => dispatch(failure(error.toString()))
             );
     };
 
-    function request() {
-        return { type: 'SUBSCRIBE_REQUEST' }
+    function success() {
+        return { type: 'GET_FEEDS_REQUEST' }
     }
 
-    function success(feeds) {
-        return { type: 'SUBSCRIBE_SUCCESS' }
+    function request() {
+        return { type: 'SUBSCRIBE_REQUEST' }
     }
 
     function failure(error) {
         return { type: 'SUBSCRIBE_FAILURE', error }
     }
 }
+
+export function filterFeeds(feeds) {
+    return dispatch =>
+        dispatch({ type: 'FILTER_FEEDS', feeds });
+};

@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import '../styles/Feeds.css';
-import { getFeeds, subscribeToFeed } from '../actionCreators';
+import { getFeeds, subscribeToFeed, filterFeeds } from '../actionCreators';
 import FeedItem from './FeedItem';
 
 class Feeds extends React.Component {
@@ -11,7 +11,7 @@ class Feeds extends React.Component {
 
     this.state = {
       feedUrl: '',
-      searchText: '',
+      searchText: '',      
     };
 
     this.registerFeed = this.registerFeed.bind(this);
@@ -29,22 +29,22 @@ class Feeds extends React.Component {
     }
   }
 
-  searchFeeds = (e) => {
-    var filtered = this.props.feeds.filter((item, index) => {
-        if(item.Content.includes(e.target.value)) return item;
-        return null;
+  searchFeeds = (val) => {
+    this.setState({ searchText: val });
+    var filtered = this.props.feeds.filter((f, index) => {
+      if (f.title.includes(val)) return f;
+      return null;
     });
-
-    this.setState({ searchText: e.target.value })
+    this.props.filterFeeds(filtered);
   };
 
   registerFeed = () => {
     if (this.state.feedUrl === '') return;
-    this.subscribeToFeed(this.state.feedUrl);
+    this.props.subscribeToFeed(this.state.feedUrl);
   };
 
   render() {
-    let feeds = this.props.feeds;
+    let feeds = this.props.visibleItems;
     return (
       <div className="feeds-box">
         <div id="status-line">
@@ -65,8 +65,13 @@ class Feeds extends React.Component {
             type="text"
             value={this.state.searchText}
             placeholder="Search..."
-            onChange={(e) => this.searchFeeds(e)}
+            onChange={e => this.searchFeeds(e.target.value)}
           />
+
+          <button className="button" id="refresh-btn"
+            onClick={() => this.props.getFeeds()}>
+            Refresh
+          </button>
 
         </div>
         {feeds.map((item, index) => <FeedItem
@@ -81,14 +86,15 @@ class Feeds extends React.Component {
 
 const mapDispatchToProps = {
   getFeeds,
-  subscribeToFeed
+  subscribeToFeed,
+  filterFeeds
 };
 
 const connectedFeeds = connect((state) => {
-  const { authentication, feeds } = state;
+  const { authentication, items } = state;
   const { user } = authentication;
-  return { user, feeds };
+  const { feeds, visibleItems } = items; 
+  return { user, feeds, visibleItems };
 }, mapDispatchToProps)(Feeds);
 
 export { connectedFeeds as Feeds };
-

@@ -51,8 +51,10 @@ function getFeeds() {
 function subscribeToFeed(url) {
     const requestOptions = {
         method: 'POST',
-        headers: authHeader(),
-        body: { url: url }
+        headers:
+            Object.assign(authHeader(),
+                { 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ url })
     };
 
     return fetch('/api/feeds/subscribe', requestOptions)

@@ -33,15 +33,24 @@ export function authentication(state = initialState, action) {
       return state
   }
 }
+const initialFeeds = { feeds: [], visibleItems: [] };
 
-export function feeds(state = [], action) {
+export function items(state = initialFeeds, action) {
   switch (action.type) {
     case constants.GET_FEEDS_REQUEST:
       return state;
     case constants.GET_FEEDS_SUCCESS:
-      return action.feeds;
+      return {
+        feeds: action.feeds,
+        visibleItems: action.feeds
+      };
     case constants.GET_FEEDS_FAILURE:
       return state;
+    case 'FILTER_FEEDS':
+      return {
+        ...state,
+        visibleItems: action.feeds
+      };
     default:
       return state;
   }

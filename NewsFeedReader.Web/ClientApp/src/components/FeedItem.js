@@ -10,7 +10,7 @@ class FeedItem extends React.Component {
             <div>
                 <a className="item-link" href={item.link}>
                     <span className={"feed-line-" + (index % 2 === 0 ? "even" : "odd")}>{item.title + " "} 
-                        <label className="send-date">{isToday(item.sendDate) ? moment(item.sendDate).format('hh:mm') : moment(item.sendDate).format('YYYY/DD/MM hh:mm')}</label>
+                        <label className="send-date">Published on: {isToday(item.sendDate) ? moment(item.sendDate).format('hh:mm') : moment(item.sendDate).format('YYYY/DD/MM hh:mm')}</label>
                     </span>
                 </a>
             </div>
