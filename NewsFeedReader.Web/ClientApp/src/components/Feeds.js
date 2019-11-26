@@ -11,7 +11,7 @@ class Feeds extends React.Component {
 
     this.state = {
       feedUrl: '',
-      searchText: '',      
+      searchText: '',
     };
 
     this.registerFeed = this.registerFeed.bind(this);
@@ -31,10 +31,9 @@ class Feeds extends React.Component {
 
   searchFeeds = (val) => {
     this.setState({ searchText: val });
-    var filtered = this.props.feeds.filter((f, index) => {
-      if (f.title.includes(val)) return f;
-      return null;
-    });
+    var filtered = this.props.feeds.filter(f =>
+      f.title.toLowerCase().includes(val.toLowerCase())
+    );
     this.props.filterFeeds(filtered);
   };
 
@@ -69,7 +68,10 @@ class Feeds extends React.Component {
           />
 
           <button className="button" id="refresh-btn"
-            onClick={() => this.props.getFeeds()}>
+            onClick={() => {
+              this.setState({ searchText: '' });
+              this.props.getFeeds()
+            }}>
             Refresh
           </button>
 
@@ -93,7 +95,7 @@ const mapDispatchToProps = {
 const connectedFeeds = connect((state) => {
   const { authentication, items } = state;
   const { user } = authentication;
-  const { feeds, visibleItems } = items; 
+  const { feeds, visibleItems } = items;
   return { user, feeds, visibleItems };
 }, mapDispatchToProps)(Feeds);
 

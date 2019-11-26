@@ -41,7 +41,7 @@ namespace NewsFeedReader.Logic
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return new JsonWebToken(tokenHandler.WriteToken(token), tokenDescriptor.Expires.Value.Ticks);
+            return new JsonWebToken(user.UserName, tokenHandler.WriteToken(token), tokenDescriptor.Expires.Value.Ticks);
         }
     }
 }

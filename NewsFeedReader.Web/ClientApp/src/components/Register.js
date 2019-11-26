@@ -1,10 +1,9 @@
 import React from 'react';
 import '../styles/Login.css';
 import { connect } from 'react-redux';
-import { login } from '../actionCreators';
-import { Link } from 'react-router-dom';
+import { register } from '../actionCreators';
 
-class Login extends React.Component {
+class Register extends React.Component {
 
     constructor(props) {
         super(props);
@@ -14,16 +13,16 @@ class Login extends React.Component {
             submitted: false
         };
 
-        this.submitLogin = this.submitLogin.bind(this);
+        this.submitRegister = this.submitRegister.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
-    submitLogin(e) {
+    submitRegister(e) {
         e.preventDefault();
         this.setState({ submitted: true });
         const { username, password } = this.state;
         if (username && password) {
-            this.props.login(username, password);
+            this.props.register(username, password);
         }
     }
 
@@ -37,7 +36,7 @@ class Login extends React.Component {
             <div className="box-container">
                 <div className="inner-container">
                     <div className="header">
-                        Login
+                        Register
                     </div>
                     <div className="box">
                         <div className="input-group">
@@ -63,9 +62,10 @@ class Login extends React.Component {
                         <button
                             type="button"
                             className="login-btn"
-                            onClick={this.submitLogin}>Login</button>
-                            <br/>
-                        <Link id="register" to="/register">Create New Account</Link>
+                            onClick={this.submitRegister}>Create New Account</button>
+                        <br />
+                        {this.props.errors &&
+                            <span className="danger-error">{this.props.errors}</span>}
                     </div>
                 </div>
             </div>
@@ -73,9 +73,15 @@ class Login extends React.Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    const { authentication } = state;
+    const { errors } = authentication;
+
+    return { errors };
+};
 const actionCreators = {
-    login: login,
+    register: register,
 };
 
-const connectedLoginPage = connect(null, actionCreators)(Login);
-export { connectedLoginPage as Login };
+const connectedLoginPage = connect(mapStateToProps, actionCreators)(Register);
+export { connectedLoginPage as Register };

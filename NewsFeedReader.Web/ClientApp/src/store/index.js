@@ -1,13 +1,16 @@
 let user = JSON.parse(localStorage.getItem('user'));
 const initialState = user ? {
   loggedIn: true,
-  user
+  user,
+  errors: ''
 } : {};
 
 const constants = {
   LOGIN_REQUEST: 'LOGIN_REQUEST',
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
   LOGIN_FAILURE: 'LOGIN_FAILURE',
+  REGISTER_SUCCESS: 'REGISTER_SUCCESS',
+  REGISTER_FAILURE: 'REGISTER_FAILURE',
   GET_FEEDS_SUCCESS: 'GET_FEEDS_SUCCESS',
   GET_FEEDS_FAILURE: 'GET_FEEDS_FAILURE',
   GET_FEEDS_REQUEST: 'GET_FEEDS_REQUEST'
@@ -29,6 +32,17 @@ export function authentication(state = initialState, action) {
       };
     case constants.LOGIN_FAILURE:
       return {};
+    case constants.REGISTER_SUCCESS:
+      return {
+        ...initialState,
+        loggedIn: true,
+        user: action.user
+      };
+    case constants.REGISTER_FAILURE:
+      return {
+        ...state,
+        errors: action.error
+      };
     default:
       return state
   }

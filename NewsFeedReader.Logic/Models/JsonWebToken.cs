@@ -7,7 +7,9 @@ namespace NewsFeedReader.Logic.Models
         public string Token { get; protected set; }
         public long Expiration { get; protected set; }
 
-        public JsonWebToken(string token, long expiration)
+        public string UserName { get; set; }
+
+        public JsonWebToken(string username, string token, long expiration)
         {
             if (string.IsNullOrWhiteSpace(token))
                 throw new ArgumentException("Invalid token.");
@@ -17,6 +19,7 @@ namespace NewsFeedReader.Logic.Models
 
             Token = token;
             Expiration = expiration;
+            UserName = username;
         }
 
         public bool IsExpired() => DateTime.UtcNow.Ticks > Expiration;

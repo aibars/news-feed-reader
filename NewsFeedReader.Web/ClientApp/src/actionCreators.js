@@ -5,10 +5,42 @@ const constants = {
     LOGIN_REQUEST: 'LOGIN_REQUEST',
     LOGIN_SUCCESS: 'LOGIN_SUCCESS',
     LOGIN_FAILURE: 'LOGIN_FAILURE',
+    REGISTER_REQUEST: 'REGISTER_REQUEST',
+    REGISTER_SUCCESS: 'REGISTER_SUCCESS',
+    REGISTER_FAILURE: 'REGISTER_FAILURE',
     GET_FEEDS_REQUEST: 'GET_FEEDS_REQUEST',
     GET_FEEDS_SUCCESS: 'GET_FEEDS_SUCCESS',
     GET_FEEDS_FAILURE: 'GET_FEEDS_FAILURE',
 };
+
+export function register(username, password) {
+    return dispatch => {
+        dispatch(request({ username }));
+
+        service.register(username, password)
+            .then(
+                user => {
+                    dispatch(success(user));
+                    history.push('/');
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                }
+            );
+
+        function request(user) {
+            return { type: constants.REGISTER_REQUEST, user }
+        }
+
+        function success(user) {
+            return { type: constants.REGISTER_SUCCESS, user }
+        }
+
+        function failure(error) {
+            return { type: constants.REGISTER_FAILURE, error }
+        }
+    };
+}
 
 export function login(username, password) {
     return dispatch => {
@@ -73,10 +105,6 @@ export function subscribeToFeed(url) {
                 error => dispatch(failure(error.toString()))
             );
     };
-
-    function success() {
-        return { type: 'GET_FEEDS_REQUEST' }
-    }
 
     function request() {
         return { type: 'SUBSCRIBE_REQUEST' }

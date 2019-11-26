@@ -43,7 +43,7 @@ namespace NewsFeedReader.Web
 
             if (user == null)
             {
-                ModelState.AddModelError("notExists", "Username or password are incorrect.");
+                ModelState.AddModelError("message", "Username or password are incorrect.");
                 return BadRequest(ModelState);
             }
 
@@ -51,7 +51,7 @@ namespace NewsFeedReader.Web
 
             if (!result.Succeeded)
             {
-                ModelState.AddModelError("notExists", "Username or password are incorrect.");
+                ModelState.AddModelError("message", "Username or password are incorrect.");
                 return BadRequest(ModelState);
             }
             else
@@ -81,8 +81,7 @@ namespace NewsFeedReader.Web
 
             if (appUser != null)
             {
-                ModelState.AddModelError("exists", "User already exists.");
-                return BadRequest(ModelState);
+                throw new ArgumentException("User already exists.");
             }
             appUser = _mapper.Map<ApplicationUser>(model);
             var result = await _userManager.CreateAsync(appUser, model.Password);
@@ -94,7 +93,7 @@ namespace NewsFeedReader.Web
             }
             else
             {
-                return BadRequest(result.Errors.First());
+                throw new ArgumentException(result.Errors.First().Description);
             }
         }
     }

@@ -4,6 +4,7 @@ export const service = {
     login,
     getFeeds: getFeeds,
     subscribeToFeed: subscribeToFeed,
+    register: register
 };
 
 function login(username, password) {
@@ -22,6 +23,22 @@ function login(username, password) {
         });
 }
 
+function register(username, password) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+    };
+
+    return fetch('/api/Account/register', requestOptions)
+        .then(handleResponse)
+        .then(user => {
+            localStorage.setItem('user', JSON.stringify(user));
+
+            return user;
+        });
+}
+
 function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
@@ -30,7 +47,7 @@ function handleResponse(response) {
                 window.location.reload(true);
             }
 
-            const error = (data && data.message) || response.statusText;
+            const error = (data && data.Message) || data.errors.Password[0];
             return Promise.reject(error);
         }
 
@@ -52,8 +69,10 @@ function subscribeToFeed(url) {
     const requestOptions = {
         method: 'POST',
         headers:
-            Object.assign(authHeader(),
-                { 'Content-Type': 'application/json' }),
+            Object.assign(
+                authHeader(),
+                { 'Content-Type': 'application/json' }
+            ),
         body: JSON.stringify({ url })
     };
 

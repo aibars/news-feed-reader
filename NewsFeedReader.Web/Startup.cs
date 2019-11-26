@@ -15,6 +15,7 @@ using NewsFeedReader.Logic;
 using NewsFeedReader.Logic.Interface;
 using NewsFeedReader.Providers;
 using NewsFeedReader.Providers.Interface;
+using NewsFeedReader.Web.Mappings;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -133,7 +134,7 @@ namespace NewsFeedReader.Web
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
